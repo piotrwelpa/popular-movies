@@ -4,13 +4,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.example.piotrwelpa.popularmovies.R;
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.ui.adapters.MovieListAdapter;
+import com.google.gson.Gson;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
