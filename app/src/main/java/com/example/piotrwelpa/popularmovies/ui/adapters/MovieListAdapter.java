@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.piotrwelpa.popularmovies.R;
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.ui.activities.MainActivity;
+import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class MovieListAdapter extends
         Movie movie = movieList.get(position);
 
         Picasso.with(holder.imageView.getContext())
-                .load(movie.getImageUrl())
+                .load(NetworkUtils.getImageUrl(movie.getPosterPath()))
                 .into(holder.imageView);
     }
 

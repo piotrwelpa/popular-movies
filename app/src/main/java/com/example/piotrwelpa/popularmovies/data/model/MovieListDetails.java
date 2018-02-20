@@ -7,32 +7,32 @@ import java.util.List;
  */
 
 public class MovieListDetails {
-    private int page;
-    private int toatlPages;
-    private int totalResult;
+    private Double page;
+    private Double toatlPages;
+    private Double totalResult;
     private List<Movie> results;
 
-    public int getPage() {
+    public Double getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(Double page) {
         this.page = page;
     }
 
-    public int getToatlPages() {
+    public Double getToatlPages() {
         return toatlPages;
     }
 
-    public void setToatlPages(int toatlPages) {
+    public void setToatlPages(Double toatlPages) {
         this.toatlPages = toatlPages;
     }
 
-    public int getTotalResult() {
+    public Double getTotalResult() {
         return totalResult;
     }
 
-    public void setTotalResult(int totalResult) {
+    public void setTotalResult(Double totalResult) {
         this.totalResult = totalResult;
     }
 

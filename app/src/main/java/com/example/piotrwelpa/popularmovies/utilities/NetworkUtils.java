@@ -84,4 +84,10 @@ public final class NetworkUtils {
         }
     }
 
+    public static String getImageUrl(String imageUrl){
+        Uri uri = Uri.parse(IMAGE_BASE_URL).buildUpon()
+                .appendPath(IMAGE_DEFAULT_SIZE).build();
+        return uri.toString() + imageUrl;
+    }
+
 }

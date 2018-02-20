@@ -1,5 +1,7 @@
 package com.example.piotrwelpa.popularmovies.data.model;
 
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -7,12 +9,12 @@ import java.util.List;
  */
 
 public class Movie {
-    private int id;
-    private int voteCount;
+    private Double id;
+    private Double voteCount;
     private boolean video;
-    private float voteAverage;
+    private Double voteAverage;
     private String title;
-    private float popularity;
+    private Double popularity;
     private String posterPath;
     private String originalTitle;
     private List<Integer> genreIds;
@@ -22,23 +24,20 @@ public class Movie {
     private String releaseDate;
     private String originalLanguage;
 
-    public String getImageUrl(){
-        return "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
-    }
 
-    public int getId() {
+    public Double getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Double id) {
         this.id = id;
     }
 
-    public int getVoteCount() {
+    public Double getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(int voteCount) {
+    public void setVoteCount(Double voteCount) {
         this.voteCount = voteCount;
     }
 
@@ -50,11 +49,11 @@ public class Movie {
         this.video = video;
     }
 
-    public float getVoteAverage() {
+    public Double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(float voteAverage) {
+    public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
     }
 
@@ -66,11 +65,11 @@ public class Movie {
         this.title = title;
     }
 
-    public float getPopularity() {
+    public Double getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(float popularity) {
+    public void setPopularity(Double popularity) {
         this.popularity = popularity;
     }
 
