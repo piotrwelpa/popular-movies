@@ -1,5 +1,6 @@
 package com.example.piotrwelpa.popularmovies.ui.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -20,6 +21,7 @@ import com.example.piotrwelpa.popularmovies.ui.adapters.MovieListAdapter;
 import com.example.piotrwelpa.popularmovies.ui.loaders.MovieLoader;
 import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +54,15 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onLoadFinished(Loader<MovieListDetails> loader, MovieListDetails data) {
                 mData = data.getResults();
-                mMovieAdapter = new MovieListAdapter(MainActivity.this, mData);
+                mMovieAdapter = new MovieListAdapter(mData, new MovieListAdapter.OnItemClickListener(){
+
+                    @Override
+                    public void onItemClick(Movie movie) {
+                        Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
+                        intent.putExtra("movie", movie);
+                        startActivity(intent);
+                    }
+                });
                 mRecyclerView.setAdapter(mMovieAdapter);
                 mRecyclerView.invalidate();
 

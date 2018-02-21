@@ -2,13 +2,14 @@ package com.example.piotrwelpa.popularmovies.data.model;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by piotr.welpa on 18.02.2018.
  */
 
-public class Movie {
+public class Movie implements Serializable {
     private Double id;
     private Double voteCount;
     private boolean video;
@@ -24,6 +25,7 @@ public class Movie {
     private String releaseDate;
     private String originalLanguage;
 
+    private static final long serialVersionUID = 1L;
 
     public Double getId() {
         return id;
