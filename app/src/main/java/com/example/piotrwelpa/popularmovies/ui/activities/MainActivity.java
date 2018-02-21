@@ -1,5 +1,7 @@
 package com.example.piotrwelpa.popularmovies.ui.activities;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.piotrwelpa.popularmovies.R;
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
@@ -20,12 +23,13 @@ import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     public static final int NUMBER_OF_COLUMNS = 2;
     MovieListAdapter mMovieAdapter;
     RecyclerView mRecyclerView;
     List<Movie> mData;
+    int mId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.posters_image_rv);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMNS));
 
+        initView();
+    }
 
+    public void initView(){
         LoaderManager.LoaderCallbacks<MovieListDetails> callback
                 = new LoaderManager.LoaderCallbacks<MovieListDetails>() {
             @Override
@@ -47,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 mData = data.getResults();
                 mMovieAdapter = new MovieListAdapter(MainActivity.this, mData);
                 mRecyclerView.setAdapter(mMovieAdapter);
+                mRecyclerView.invalidate();
+
             }
 
             @Override
@@ -54,9 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        getSupportLoaderManager().initLoader(0,null, callback);
-
-
+        getSupportLoaderManager().initLoader(mId,null, callback);
     }
 
     @Override
@@ -69,14 +76,20 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_set_pref_popular:
-                MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_POPULAR_ENDPOINT);
+                if (!MoviesPreferences.getPreferedEndpoint(this).equals(MoviesPreferences.PREF_POPULAR_ENDPOINT)) {
+                    MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_POPULAR_ENDPOINT);
+                    mId++;
+                    initView();
+                }
                 return true;
             case R.id.action_set_pref_top_rated:
-                MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_TOP_RATED_ENDPOINT);
+                if (!MoviesPreferences.getPreferedEndpoint(this).equals(MoviesPreferences.PREF_TOP_RATED_ENDPOINT)){
+                    MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_TOP_RATED_ENDPOINT);
+                    mId++;
+                    initView();
+                }
                 return true;
         }
         return false;
     }
-
-
 }

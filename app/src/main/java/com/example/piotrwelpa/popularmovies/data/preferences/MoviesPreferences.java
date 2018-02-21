@@ -1,5 +1,6 @@
 package com.example.piotrwelpa.popularmovies.data.preferences;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -21,8 +22,9 @@ public final class MoviesPreferences {
 
     public static void setPreferedEndpoint(Context context, String endpoint){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREF_ENDPOINT_KEY, endpoint);
+        editor.apply();
     }
 
 }
