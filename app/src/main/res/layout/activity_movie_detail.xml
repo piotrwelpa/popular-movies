@@ -22,17 +22,72 @@
             tools:context="com.example.piotrwelpa.popularmovies.ui.activities.MovieDetailActivity">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/original_title_tv"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="TextView"
+                android:layout_height="wrap_content"
+                android:text="@{movie.originalTitle}"
                 android:gravity="center_vertical"
                 android:paddingLeft="24dp"
+                android:textSize="48sp"
+                android:textColor="@color/colorText"
+                android:textStyle="bold"
                 android:background="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/mini_poster_iv"
+                android:layout_width="154dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/original_title_tv"
+                app:posterPath="@{movie.posterPath}" />
+
+            <TextView
+                android:id="@+id/year_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.releaseDate}"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@id/mini_poster_iv"
+                app:layout_constraintTop_toBottomOf="@+id/original_title_tv"/>
+
+            <TextView
+                android:id="@+id/user_rating_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.voteAverage}"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@id/mini_poster_iv"
+                app:layout_constraintTop_toBottomOf="@+id/year_tv"/>
+
+            <TextView
+                android:id="@+id/overview_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.overview}"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mini_poster_iv"/>
+
         </android.support.constraint.ConstraintLayout>
+
+
 
 
     </ScrollView>

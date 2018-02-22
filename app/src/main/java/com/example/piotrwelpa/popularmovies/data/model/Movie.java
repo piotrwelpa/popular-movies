@@ -1,6 +1,12 @@
 package com.example.piotrwelpa.popularmovies.data.model;
 
+import android.databinding.BindingAdapter;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.example.piotrwelpa.popularmovies.R;
+import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
+import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.List;
@@ -51,8 +57,12 @@ public class Movie implements Serializable {
         this.video = video;
     }
 
-    public Double getVoteAverage() {
-        return voteAverage;
+//    public Double getVoteAverage() {
+//        return voteAverage;
+//    }
+
+    public String getVoteAverage(){
+        return String.valueOf(voteAverage) + "/10";
     }
 
     public void setVoteAverage(Double voteAverage) {
@@ -137,6 +147,14 @@ public class Movie implements Serializable {
 
     public void setOriginalLanguage(String originalLanguage) {
         this.originalLanguage = originalLanguage;
+    }
+
+    @BindingAdapter({"bind:posterPath"})
+    public static void loadImage(ImageView view, String posterPath){
+        String imageUrl = NetworkUtils.getImageUrl(posterPath);
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .into(view);
     }
 }
 
