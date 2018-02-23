@@ -1,15 +1,21 @@
 package com.example.piotrwelpa.popularmovies.ui.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.net.ConnectivityManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.piotrwelpa.popularmovies.R;
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity{
     private static Bundle mBundleRecyclerViewState;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +46,11 @@ public class MainActivity extends AppCompatActivity{
         mRecyclerView = findViewById(R.id.posters_image_rv);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMNS));
 
-        initView();
+        if (isOnline()) {
+            initView();
+        }else {
+            Toast.makeText(this, "Network connection is disabled. Please enable it.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void initView(){
@@ -91,14 +102,22 @@ public class MainActivity extends AppCompatActivity{
                 if (!MoviesPreferences.getPreferedEndpoint(this).equals(MoviesPreferences.PREF_POPULAR_ENDPOINT)) {
                     MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_POPULAR_ENDPOINT);
                     mId++;
-                    initView();
+                    if (isOnline()) {
+                        initView();
+                    }else {
+                        Toast.makeText(this, "Network connection is disabled. Please enable it.", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return true;
             case R.id.action_set_pref_top_rated:
                 if (!MoviesPreferences.getPreferedEndpoint(this).equals(MoviesPreferences.PREF_TOP_RATED_ENDPOINT)){
                     MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_TOP_RATED_ENDPOINT);
                     mId++;
-                    initView();
+                    if (isOnline()) {
+                        initView();
+                    }else {
+                        Toast.makeText(this, "Network connection is disabled. Please enable it.", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return true;
         }
@@ -126,6 +145,13 @@ public class MainActivity extends AppCompatActivity{
             Parcelable listState = mBundleRecyclerViewState.getParcelable(KEY_RECYCLER_STATE);
             mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
         }
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 }
