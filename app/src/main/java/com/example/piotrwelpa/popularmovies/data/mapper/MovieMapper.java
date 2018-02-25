@@ -19,6 +19,9 @@ import java.util.Map;
  */
 
 public final class MovieMapper {
+    private MovieMapper() {
+    }
+
     /* TOP OBJECT TAGS */
     private static final String TOP_PAGE = "page";
     private static final String TOP_TOTAL_RESULT = "total_results";

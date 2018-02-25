@@ -10,6 +10,9 @@ import android.preference.PreferenceManager;
  */
 
 public final class MoviesPreferences {
+    private MoviesPreferences() {
+    }
+
     public static final String PREF_POPULAR_ENDPOINT = "popular";
     public static final String PREF_TOP_RATED_ENDPOINT = "top_rated";
 

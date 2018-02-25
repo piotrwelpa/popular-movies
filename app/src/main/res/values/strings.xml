@@ -5,4 +5,6 @@
     <string name="sort_by_top_rated">Sort by Top Rated</string>
     <string name="poster_thumbnail">Poster thumbnail</string>
     <string name="refresh">Refresh</string>
+    <string name="play_icon">Play icon</string>
+    <string name="internet_error_message">Network connection is disabled. Please enable it and refresh.</string>
 </resources>

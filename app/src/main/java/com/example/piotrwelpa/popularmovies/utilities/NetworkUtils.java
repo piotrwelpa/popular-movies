@@ -11,15 +11,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Scanner;
 
-/**
- * Created by piotr.welpa on 18.02.2018.
- */
 
 public final class NetworkUtils {
+
+    private NetworkUtils() {
+    }
+
     /* Movie list URL  */
     private static final String BASE_URL = "http://api.themoviedb.org/3/movie";
     private static final String POPULAR_ENDPOINT = "popular";
@@ -82,7 +81,7 @@ public final class NetworkUtils {
 
         if (context != null) {
             url = getUrl(context);
-            if (id != null){
+            if (id != null) {
                 url = getUrl(context, id);
             }
         }

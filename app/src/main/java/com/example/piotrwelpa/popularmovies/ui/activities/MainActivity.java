@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         if (isOnline()) {
             initView();
         } else {
-            Toast.makeText(this, "Network connection is disabled. Please enable it.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     if (isOnline()) {
                         initView();
                     } else {
-                        Toast.makeText(this, "Network connection is disabled. Please enable it and refresh.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
                     }
                 }
                 return true;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     if (isOnline()) {
                         initView();
                     } else {
-                        Toast.makeText(this, "Network connection is disabled. Please enable it and refresh.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
                     }
                 }
                 return true;
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isOnline()) {
                     initView();
                 } else {
-                    Toast.makeText(this, "Network connection is disabled. Please enable it and refresh.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
                 }
                 return true;
         }
