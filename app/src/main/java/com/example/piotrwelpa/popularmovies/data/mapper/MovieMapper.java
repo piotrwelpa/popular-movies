@@ -1,9 +1,15 @@
 package com.example.piotrwelpa.popularmovies.data.mapper;
 
+import android.util.Log;
+
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.data.model.MovieListDetails;
+import com.example.piotrwelpa.popularmovies.data.model.Trailer;
+import com.example.piotrwelpa.popularmovies.data.model.TrailerList;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -71,5 +77,10 @@ public final class MovieMapper {
         movieListDetails.setResults(movieArrayList);
 
         return movieListDetails;
+    }
+
+    public static TrailerList parseTrailerJsonToTrailerList(String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, TrailerList.class);
     }
 }

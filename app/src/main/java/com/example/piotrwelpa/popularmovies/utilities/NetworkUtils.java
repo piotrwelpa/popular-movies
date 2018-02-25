@@ -28,6 +28,9 @@ public final class NetworkUtils {
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p";
     private static final String IMAGE_DEFAULT_SIZE = "w185";
 
+    /* Trailer Url*/
+    private static final String TRAILER_VIDEO = "video";
+
     private static URL getUrl(Context context) throws MalformedURLException {
         String endpoint = MoviesPreferences.getPreferredEndpoint(context);
 
@@ -37,6 +40,10 @@ public final class NetworkUtils {
             return buildTopRatedUrl(context);
         }
         return null;
+    }
+
+    private static URL getUrl(Context context, Double id) throws MalformedURLException {
+        return buildTrailerUrl(context, id);
     }
 
     private static URL buildPopularUrl(Context context) throws MalformedURLException {
@@ -57,8 +64,25 @@ public final class NetworkUtils {
         return new URL(movieUri.toString());
     }
 
-    public static String getResponseFromHttpUrl(Context context) throws IOException {
-        URL url = getUrl(context);
+    private static URL buildTrailerUrl(Context context, Double id) throws MalformedURLException {
+        Uri trailerUri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(String.valueOf(id))
+                .appendPath(TRAILER_VIDEO)
+                .appendQueryParameter(API_KEY_PREFIX, context.getString(R.string.API_KEY))
+                .build();
+        return new URL(trailerUri.toString());
+    }
+
+    public static String getResponseFromHttpUrl(Context context, Double id) throws IOException {
+        URL url = null;
+
+        if (context != null) {
+            url = getUrl(context);
+            if (id != null){
+                url = getUrl(context, id);
+            }
+        }
+
         if (url == null) {
             return null;
         }

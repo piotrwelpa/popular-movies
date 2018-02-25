@@ -31,7 +31,7 @@ public class MovieLoader extends AsyncTaskLoader<MovieListDetails> {
     public MovieListDetails loadInBackground() {
         String resultFromUrl = null;
         try {
-            resultFromUrl = NetworkUtils.getResponseFromHttpUrl(getContext());
+            resultFromUrl = NetworkUtils.getResponseFromHttpUrl(getContext(), null);
         } catch (IOException e) {
             Log.e("MovieLoader", "Error in getting response from http. ");
             e.printStackTrace();
