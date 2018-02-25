@@ -1,17 +1,13 @@
 package com.example.piotrwelpa.popularmovies.ui.adapters;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.piotrwelpa.popularmovies.R;
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
-import com.example.piotrwelpa.popularmovies.ui.activities.MainActivity;
-import com.example.piotrwelpa.popularmovies.ui.activities.MovieDetailActivity;
 import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -24,13 +20,14 @@ import java.util.List;
 public class MovieListAdapter extends
         RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(Movie movie);
     }
-    private List<Movie> movieList;
-    private OnItemClickListener listener;
 
-    public MovieListAdapter(List<Movie> movieList, OnItemClickListener listener){
+    private final List<Movie> movieList;
+    private final OnItemClickListener listener;
+
+    public MovieListAdapter(List<Movie> movieList, OnItemClickListener listener) {
         this.movieList = movieList;
         this.listener = listener;
     }
@@ -49,6 +46,8 @@ public class MovieListAdapter extends
 
         Picasso.with(holder.imageView.getContext())
                 .load(NetworkUtils.getImageUrl(movie.getPosterPath()))
+                .placeholder(R.drawable.placeholder)
+                .error(R.mipmap.default_image)
                 .into(holder.imageView);
 
         holder.bind(movie, listener);
@@ -59,25 +58,16 @@ public class MovieListAdapter extends
         return movieList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
-//            implements View.OnClickListener {
-        ImageView imageView;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        final ImageView imageView;
 
-        ViewHolder(View itemView){
+        ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.poster_iv);
-            //imageView.setOnClickListener(this);
         }
-//
-//        @Override
-//        public void onClick(View v) {
-//            Intent intent = new Intent(v.getContext(), MovieDetailActivity.class);
-//            v.getContext().startActivities(new Intent[]{intent});
-//
-//        }
 
-        public void bind(final Movie movie, final OnItemClickListener listener){
-            itemView.setOnClickListener(new View.OnClickListener(){
+        public void bind(final Movie movie, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {

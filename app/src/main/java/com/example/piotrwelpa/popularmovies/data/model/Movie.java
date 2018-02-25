@@ -1,7 +1,6 @@
 package com.example.piotrwelpa.popularmovies.data.model;
 
 import android.databinding.BindingAdapter;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.piotrwelpa.popularmovies.R;
@@ -61,7 +60,7 @@ public class Movie implements Serializable {
 //        return voteAverage;
 //    }
 
-    public String getVoteAverage(){
+    public String getVoteAverage() {
         return String.valueOf(voteAverage) + "/10";
     }
 
@@ -150,11 +149,14 @@ public class Movie implements Serializable {
     }
 
     @BindingAdapter({"bind:posterPath"})
-    public static void loadImage(ImageView view, String posterPath){
+    public static void loadImage(ImageView view, String posterPath) {
         String imageUrl = NetworkUtils.getImageUrl(posterPath);
         Picasso.with(view.getContext())
                 .load(imageUrl)
+                .placeholder(R.drawable.placeholder)
+                .error(R.mipmap.default_image)
                 .into(view);
     }
+
 }
 

@@ -1,7 +1,5 @@
 package com.example.piotrwelpa.popularmovies.data.mapper;
 
-import android.util.Log;
-
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.data.model.MovieListDetails;
 import com.google.gson.Gson;
@@ -31,27 +29,27 @@ public final class MovieMapper {
     private static final String OVERVIEW = "overview";
     private static final String POPULARITY = "popularity";
     private static final String POSTER_PATH = "poster_path";
-    private static final String RELASE_DATE = "release_date";
+    private static final String RELEASE_DATE = "release_date";
     private static final String TITLE = "title";
     private static final String VIDEO = "video";
     private static final String VOTE_AVERAGE = "vote_average";
     private static final String VOTE_COUNT = "vote_count";
 
-    public static MovieListDetails parseJsonToMovieList(String jsonString){
+    public static MovieListDetails parseJsonToMovieList(String jsonString) {
         Map jsonMap = new Gson().fromJson(jsonString, Map.class);
 
         MovieListDetails movieListDetails = new MovieListDetails();
 
-        /* Init list parametes */
+        /* Init list parameters */
         movieListDetails.setPage((Double) jsonMap.get(TOP_PAGE));
-        movieListDetails.setToatlPages((Double) jsonMap.get(TOP_TOTAL_PAGES));
+        movieListDetails.setTotalPages((Double) jsonMap.get(TOP_TOTAL_PAGES));
         movieListDetails.setTotalResult((Double) jsonMap.get(TOP_TOTAL_RESULT));
 
         ArrayList<Movie> movieArrayList = new ArrayList<>();
 
         ArrayList<Map> list = (ArrayList<Map>) jsonMap.get(TOP_RESULTS);
 
-        for (Map item: list){
+        for (Map item : list) {
             Movie movie = new Movie();
             movie.setId((Double) item.get(ID));
             movie.setAdult((Boolean) item.get(ADULT));
@@ -61,7 +59,7 @@ public final class MovieMapper {
             movie.setOverview((String) item.get(OVERVIEW));
             movie.setPopularity((Double) item.get(POPULARITY));
             movie.setPosterPath((String) item.get(POSTER_PATH));
-            movie.setReleaseDate((String) item.get(RELASE_DATE));
+            movie.setReleaseDate((String) item.get(RELEASE_DATE));
             movie.setTitle((String) item.get(TITLE));
             movie.setVideo((Boolean) item.get(VIDEO));
             movie.setVoteAverage((Double) item.get(VOTE_AVERAGE));

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MovieListDetails {
     private Double page;
-    private Double toatlPages;
+    private Double totalPages;
     private Double totalResult;
     private List<Movie> results;
 
@@ -20,12 +20,12 @@ public class MovieListDetails {
         this.page = page;
     }
 
-    public Double getToatlPages() {
-        return toatlPages;
+    public Double getTotalPages() {
+        return totalPages;
     }
 
-    public void setToatlPages(Double toatlPages) {
-        this.toatlPages = toatlPages;
+    public void setTotalPages(Double totalPages) {
+        this.totalPages = totalPages;
     }
 
     public Double getTotalResult() {

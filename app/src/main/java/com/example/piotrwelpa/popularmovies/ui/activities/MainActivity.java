@@ -1,6 +1,5 @@
 package com.example.piotrwelpa.popularmovies.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -8,11 +7,11 @@ import android.net.NetworkInfo;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.net.ConnectivityManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -26,17 +25,15 @@ import com.example.piotrwelpa.popularmovies.ui.loaders.MovieLoader;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
-    public static final int NUMBER_OF_COLUMNS = 2;
     public static final String MOVIE_KEY = "movie";
-    MovieListAdapter mMovieAdapter;
-    RecyclerView mRecyclerView;
-    List<Movie> mData;
-    int mId = 0;
+    private MovieListAdapter mMovieAdapter;
+    private RecyclerView mRecyclerView;
+    private List<Movie> mData;
+    private int mId = 0;
     private final String KEY_RECYCLER_STATE = "recycler_state";
     private static Bundle mBundleRecyclerViewState;
-
 
 
     @Override
@@ -44,16 +41,16 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = findViewById(R.id.posters_image_rv);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, NUMBER_OF_COLUMNS));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns()));
 
         if (isOnline()) {
             initView();
-        }else {
+        } else {
             Toast.makeText(this, "Network connection is disabled. Please enable it.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void initView(){
+    private void initView() {
         LoaderManager.LoaderCallbacks<MovieListDetails> callback
                 = new LoaderManager.LoaderCallbacks<MovieListDetails>() {
             @Override
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onLoadFinished(Loader<MovieListDetails> loader, MovieListDetails data) {
                 mData = data.getResults();
-                mMovieAdapter = new MovieListAdapter(mData, new MovieListAdapter.OnItemClickListener(){
+                mMovieAdapter = new MovieListAdapter(mData, new MovieListAdapter.OnItemClickListener() {
 
                     @Override
                     public void onItemClick(Movie movie) {
@@ -86,7 +83,7 @@ public class MainActivity extends AppCompatActivity{
 
             }
         };
-        getSupportLoaderManager().initLoader(mId,null, callback);
+        getSupportLoaderManager().initLoader(mId, null, callback);
     }
 
     @Override
@@ -97,27 +94,34 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_set_pref_popular:
-                if (!MoviesPreferences.getPreferedEndpoint(this).equals(MoviesPreferences.PREF_POPULAR_ENDPOINT)) {
-                    MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_POPULAR_ENDPOINT);
+                if (!MoviesPreferences.getPreferredEndpoint(this).equals(MoviesPreferences.PREF_POPULAR_ENDPOINT)) {
+                    MoviesPreferences.setPreferredEndpoint(this, MoviesPreferences.PREF_POPULAR_ENDPOINT);
                     mId++;
                     if (isOnline()) {
                         initView();
-                    }else {
-                        Toast.makeText(this, "Network connection is disabled. Please enable it.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Network connection is disabled. Please enable it and refresh.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 return true;
             case R.id.action_set_pref_top_rated:
-                if (!MoviesPreferences.getPreferedEndpoint(this).equals(MoviesPreferences.PREF_TOP_RATED_ENDPOINT)){
-                    MoviesPreferences.setPreferedEndpoint(this, MoviesPreferences.PREF_TOP_RATED_ENDPOINT);
+                if (!MoviesPreferences.getPreferredEndpoint(this).equals(MoviesPreferences.PREF_TOP_RATED_ENDPOINT)) {
+                    MoviesPreferences.setPreferredEndpoint(this, MoviesPreferences.PREF_TOP_RATED_ENDPOINT);
                     mId++;
                     if (isOnline()) {
                         initView();
-                    }else {
-                        Toast.makeText(this, "Network connection is disabled. Please enable it.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Network connection is disabled. Please enable it and refresh.", Toast.LENGTH_SHORT).show();
                     }
+                }
+                return true;
+            case R.id.action_refresh:
+                if (isOnline()) {
+                    initView();
+                } else {
+                    Toast.makeText(this, "Network connection is disabled. Please enable it and refresh.", Toast.LENGTH_SHORT).show();
                 }
                 return true;
         }
@@ -125,8 +129,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
 
         // save RecyclerView state
@@ -136,8 +139,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
         // restore RecyclerView state
@@ -147,11 +149,25 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        NetworkInfo netInfo = null;
+        if (cm != null) {
+            netInfo = cm.getActiveNetworkInfo();
+        }
+
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // You can change this divider to adjust the size of the poster
+        int widthDivider = 400;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
+    }
 }
