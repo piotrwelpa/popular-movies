@@ -18,12 +18,16 @@ import com.example.piotrwelpa.popularmovies.data.model.TrailerList;
 import com.example.piotrwelpa.popularmovies.databinding.ActivityMovieDetailBinding;
 import com.example.piotrwelpa.popularmovies.ui.adapters.MovieListAdapter;
 import com.example.piotrwelpa.popularmovies.ui.loaders.MovieLoader;
+import com.example.piotrwelpa.popularmovies.ui.loaders.TrailersLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity {
     private int mId = 0;
+    private List<Trailer> mData;
+    private Double movieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +35,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         Movie movie = (Movie) getIntent().getSerializableExtra(MainActivity.MOVIE_KEY);
-
+        movieId = movie.getId();
         setTitle("Movie details");
         populateUI(movie);
 
-        String jsonString = "{\"id\":19404,\"results\":[{\"id\":\"5581bd68c3a3685df70000c6\",\"iso_639_1\":\"en\",\"iso_3166_1\":\"US\",\"key\":\"c25GKl5VNeY\",\"name\":\"Trailer 1\",\"site\":\"YouTube\",\"size\":720,\"type\":\"Trailer\"},{\"id\":\"58e9bfb6925141351f02fde0\",\"iso_639_1\":\"en\",\"iso_3166_1\":\"US\",\"key\":\"Y9JvS2TmSvA\",\"name\":\"Mere Khwabon Mein - song by CinePlusPlus\",\"site\":\"YouTube\",\"size\":720,\"type\":\"Clip\"},{\"id\":\"58e9bf11c3a36872ee070b9a\",\"iso_639_1\":\"en\",\"iso_3166_1\":\"US\",\"key\":\"H74COj0UQ_Q\",\"name\":\"Zara Sa Jhoom Loon Main - song by CinePlusPlus\",\"site\":\"YouTube\",\"size\":720,\"type\":\"Clip\"},{\"id\":\"58e9c00792514152ac020a34\",\"iso_639_1\":\"en\",\"iso_3166_1\":\"US\",\"key\":\"OkjXMqK1G0o\",\"name\":\"Ho Gaya Hai Tujhko To Pyar Sajna - song by CinePlusPlus\",\"site\":\"YouTube\",\"size\":720,\"type\":\"Clip\"},{\"id\":\"58e9c034c3a36872ee070c84\",\"iso_639_1\":\"en\",\"iso_3166_1\":\"US\",\"key\":\"7NhoeyoR_XA\",\"name\":\"Mehndi Laga Ke Rakhna - song by CinePlusPlus\",\"site\":\"YouTube\",\"size\":720,\"type\":\"Clip\"},{\"id\":\"58e9c07f9251414b2802a16e\",\"iso_639_1\":\"en\",\"iso_3166_1\":\"US\",\"key\":\"Ee-cCwP7VPQ\",\"name\":\"Tujhe dekha to  Ye Jaana Sanam - song by CinePlus\",\"site\":\"YouTube\",\"size\":480,\"type\":\"Clip\"}]}";
-
-        try {
-            TrailerList trailers = MovieMapper.parseTrailerJsonToTrailerList(jsonString);
-            Trailer trailer = trailers.getResults().get(0);
-            Log.d("JSON MAPPER JACKSON: ", trailer.getName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadAdditionalData();
 
     }
 
@@ -52,21 +48,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         binding.setMovie(movie);
     }
 
-    private void loadAdditionalData(Double id) {
-        LoaderManager.LoaderCallbacks<MovieListDetails> callback
-                = new LoaderManager.LoaderCallbacks<MovieListDetails>() {
+    private void loadAdditionalData() {
+        LoaderManager.LoaderCallbacks<TrailerList> callback
+                = new LoaderManager.LoaderCallbacks<TrailerList>() {
             @Override
-            public Loader<MovieListDetails> onCreateLoader(int id, Bundle args) {
-                return new MovieLoader(MovieDetailActivity.this);
+            public Loader<TrailerList> onCreateLoader(int id, Bundle args) {
+                return new TrailersLoader(MovieDetailActivity.this, movieId);
             }
 
             @Override
-            public void onLoadFinished(Loader<MovieListDetails> loader, MovieListDetails data) {
-
+            public void onLoadFinished(Loader<TrailerList> loader, TrailerList data) {
+                if (data != null) {
+                    mData = data.getResults();
+                    Log.d("MovieDetails: ", mData.get(0).getName());
+                }
             }
 
             @Override
-            public void onLoaderReset(Loader<MovieListDetails> loader) {
+            public void onLoaderReset(Loader<TrailerList> loader) {
 
             }
         };

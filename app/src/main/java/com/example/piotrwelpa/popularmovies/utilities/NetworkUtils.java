@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 /**
@@ -29,7 +31,7 @@ public final class NetworkUtils {
     private static final String IMAGE_DEFAULT_SIZE = "w185";
 
     /* Trailer Url*/
-    private static final String TRAILER_VIDEO = "video";
+    private static final String TRAILER_VIDEO = "videos";
 
     private static URL getUrl(Context context) throws MalformedURLException {
         String endpoint = MoviesPreferences.getPreferredEndpoint(context);
@@ -65,8 +67,10 @@ public final class NetworkUtils {
     }
 
     private static URL buildTrailerUrl(Context context, Double id) throws MalformedURLException {
+
+
         Uri trailerUri = Uri.parse(BASE_URL).buildUpon()
-                .appendPath(String.valueOf(id))
+                .appendPath(String.valueOf(id).split("\\.")[0])
                 .appendPath(TRAILER_VIDEO)
                 .appendQueryParameter(API_KEY_PREFIX, context.getString(R.string.API_KEY))
                 .build();
