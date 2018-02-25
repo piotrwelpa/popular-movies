@@ -1,6 +1,7 @@
 package com.example.piotrwelpa.popularmovies.ui.adapters;
 
 
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 
 import com.example.piotrwelpa.popularmovies.R;
 import com.example.piotrwelpa.popularmovies.data.model.Trailer;
+import com.example.piotrwelpa.popularmovies.databinding.TrailerItemBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TrailerListAdapter extends
@@ -21,7 +24,7 @@ public class TrailerListAdapter extends
     }
 
 
-    private final List<Trailer> trailerList;
+    private List<Trailer> trailerList = new ArrayList<>();
     private final OnItemClickListener listener;
 
     public TrailerListAdapter(List<Trailer> trailerList, OnItemClickListener listener) {
@@ -31,17 +34,15 @@ public class TrailerListAdapter extends
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.trailer_item, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        TrailerItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.trailer_item, parent, false);
 
-        return new ViewHolder(itemView);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Trailer trailer = trailerList.get(position);
-        holder.textView.setText(trailer.getName());
-
         holder.bind(trailer, listener);
     }
 
@@ -52,15 +53,17 @@ public class TrailerListAdapter extends
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView textView;
+        private TrailerItemBinding mBinding;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            textView = itemView.findViewById(R.id.trailer_title_tv);
+        ViewHolder(TrailerItemBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
 
         }
 
         void bind(final Trailer trailer, final OnItemClickListener listener) {
+            mBinding.setTrailer(trailer);
+            mBinding.executePendingBindings();
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override

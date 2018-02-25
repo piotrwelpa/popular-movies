@@ -49,6 +49,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.trailers_lv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
         movieId = movie.getId();
+        Log.d("ID!!!!!!!!!!!: ", String.valueOf(movieId));
         setTitle("Movie details");
         populateUI(movie);
 
@@ -81,6 +82,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void populateUI(Movie movie) {
         ActivityMovieDetailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         binding.setMovie(movie);
+        loadAdditionalData();
     }
 
     private void loadAdditionalData() {
