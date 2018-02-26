@@ -5,21 +5,16 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.piotrwelpa.popularmovies.data.mapper.MovieMapper;
-import com.example.piotrwelpa.popularmovies.data.model.MovieListDetails;
-import com.example.piotrwelpa.popularmovies.data.model.TrailerList;
+import com.example.piotrwelpa.popularmovies.data.model.ReviewList;
 import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
 
-/**
- * Created by piotr.welpa on 20.02.2018.
- */
-
-public class TrailersLoader extends AsyncTaskLoader<TrailerList> {
+public class ReviewLoader extends AsyncTaskLoader<ReviewList> {
     private Double id;
-    private static final String TAG = TrailersLoader.class.getSimpleName();
+    private static final String TAG = ReviewLoader.class.getSimpleName();
 
-    public TrailersLoader(Context context, Double id) {
+    public ReviewLoader(Context context, Double id) {
         super(context);
         this.id = id;
     }
@@ -31,10 +26,11 @@ public class TrailersLoader extends AsyncTaskLoader<TrailerList> {
     }
 
     @Override
-    public TrailerList loadInBackground() {
+    public ReviewList loadInBackground() {
         String resultFromUrl = null;
         try {
-            resultFromUrl = NetworkUtils.getResponseFromHttpUrl(getContext(), id, NetworkUtils.TRAILER_VIDEO);
+            resultFromUrl = NetworkUtils.getResponseFromHttpUrl(getContext(), id, NetworkUtils.REVIEW);
+            Log.d("REVIEW JSON: ", resultFromUrl);
         } catch (IOException e) {
             Log.e(TAG, "Error in getting response from http. ");
             e.printStackTrace();
@@ -42,7 +38,8 @@ public class TrailersLoader extends AsyncTaskLoader<TrailerList> {
         if (resultFromUrl == null) return null;
 
         try {
-            return MovieMapper.parseTrailerJsonToTrailerList(resultFromUrl);
+
+            return MovieMapper.parseReviewJsonToReviewList(resultFromUrl);
         } catch (IOException e) {
             Log.e(TAG, "Error while parsing json to object. ");
             e.printStackTrace();
@@ -51,7 +48,7 @@ public class TrailersLoader extends AsyncTaskLoader<TrailerList> {
     }
 
     @Override
-    public void deliverResult(TrailerList data) {
+    public void deliverResult(ReviewList data) {
         super.deliverResult(data);
     }
 }

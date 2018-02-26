@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.data.model.MovieListDetails;
+import com.example.piotrwelpa.popularmovies.data.model.ReviewList;
 import com.example.piotrwelpa.popularmovies.data.model.Trailer;
 import com.example.piotrwelpa.popularmovies.data.model.TrailerList;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -85,5 +86,10 @@ public final class MovieMapper {
     public static TrailerList parseTrailerJsonToTrailerList(String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(json, TrailerList.class);
+    }
+
+    public static ReviewList parseReviewJsonToReviewList(String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, ReviewList.class);
     }
 }

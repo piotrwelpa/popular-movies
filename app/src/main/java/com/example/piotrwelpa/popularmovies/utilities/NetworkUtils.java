@@ -30,7 +30,10 @@ public final class NetworkUtils {
     private static final String IMAGE_DEFAULT_SIZE = "w185";
 
     /* Trailer Url*/
-    private static final String TRAILER_VIDEO = "videos";
+    public static final String TRAILER_VIDEO = "videos";
+
+    /* Review Url*/
+    public static final String REVIEW = "reviews";
 
     private static URL getUrl(Context context) throws MalformedURLException {
         String endpoint = MoviesPreferences.getPreferredEndpoint(context);
@@ -43,8 +46,14 @@ public final class NetworkUtils {
         return null;
     }
 
-    private static URL getUrl(Context context, Double id) throws MalformedURLException {
-        return buildTrailerUrl(context, id);
+    private static URL getUrl(Context context, Double id, String endpoint) throws MalformedURLException {
+        if (endpoint.equals(TRAILER_VIDEO)) {
+            return buildTrailerUrl(context, id);
+        }
+        if (endpoint.equals(REVIEW)){
+            return buildReviewUrl(context, id);
+        }
+        return null;
     }
 
     private static URL buildPopularUrl(Context context) throws MalformedURLException {
@@ -66,8 +75,6 @@ public final class NetworkUtils {
     }
 
     private static URL buildTrailerUrl(Context context, Double id) throws MalformedURLException {
-
-
         Uri trailerUri = Uri.parse(BASE_URL).buildUpon()
                 .appendPath(String.valueOf(id).split("\\.")[0])
                 .appendPath(TRAILER_VIDEO)
@@ -76,13 +83,22 @@ public final class NetworkUtils {
         return new URL(trailerUri.toString());
     }
 
-    public static String getResponseFromHttpUrl(Context context, Double id) throws IOException {
+    private static URL buildReviewUrl(Context context, Double id) throws MalformedURLException {
+        Uri trailerUri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(String.valueOf(id).split("\\.")[0])
+                .appendPath(REVIEW)
+                .appendQueryParameter(API_KEY_PREFIX, context.getString(R.string.API_KEY))
+                .build();
+        return new URL(trailerUri.toString());
+    }
+
+    public static String getResponseFromHttpUrl(Context context, Double id, String endpoint) throws IOException {
         URL url = null;
 
         if (context != null) {
             url = getUrl(context);
-            if (id != null) {
-                url = getUrl(context, id);
+            if (id != null && endpoint != null) {
+                url = getUrl(context, id, endpoint);
             }
         }
 

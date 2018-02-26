@@ -3,11 +3,9 @@ package com.example.piotrwelpa.popularmovies.ui.adapters;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.piotrwelpa.popularmovies.R;
 import com.example.piotrwelpa.popularmovies.data.model.Trailer;
