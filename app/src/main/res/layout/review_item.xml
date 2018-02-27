@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="trailer"
-            type="com.example.piotrwelpa.popularmovies.data.model.Trailer" />
+            name="review"
+            type="com.example.piotrwelpa.popularmovies.data.model.Review" />
     </data>
 
     <LinearLayout
@@ -21,21 +22,29 @@
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="26dp"
+                android:layout_height="32dp"
                 android:layout_weight="1"
-                android:contentDescription="@string/play_icon"
-                android:src="@android:drawable/ic_media_play" />
+                android:contentDescription="@string/review_icon"
+                android:src="@android:drawable/sym_action_chat" />
 
             <TextView
-                android:id="@+id/trailer_title_tv"
+                android:id="@+id/review_name_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:gravity="center_vertical"
-                android:text="@{trailer.name}"
+                android:text="@{review.author}"
                 android:textSize="@dimen/description_text_size" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/review_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_default_margin"
+            android:text="@{review.content}"
+            android:textSize="@dimen/description_text_size" />
 
         <TextView
             android:layout_width="match_parent"

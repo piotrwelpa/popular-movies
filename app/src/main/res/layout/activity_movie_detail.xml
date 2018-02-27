@@ -1,111 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
-
-        <variable
-            name="movie"
-            type="com.example.piotrwelpa.popularmovies.data.model.Movie" />
-    </data>
-
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <TextView
+            android:id="@+id/original_title_tv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.example.piotrwelpa.popularmovies.ui.activities.MovieDetailActivity">
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:gravity="center_vertical"
+            android:paddingEnd="@dimen/title_padding_left"
+            android:paddingStart="@dimen/title_padding_left"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/app_name" />
 
-            <TextView
-                android:id="@+id/original_title_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:gravity="center_vertical"
-                android:paddingEnd="@dimen/title_padding_left"
-                android:paddingStart="@dimen/title_padding_left"
-                android:text="@{movie.originalTitle}"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/title_text_size"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/app_name" />
+        <ImageView
+            android:id="@+id/mini_poster_iv"
+            android:layout_width="@dimen/thumbnail_width"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/poster_thumbnail"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/original_title_tv"
+            tools:src="@mipmap/default_image" />
 
-            <ImageView
-                android:id="@+id/mini_poster_iv"
-                android:layout_width="@dimen/thumbnail_width"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/poster_thumbnail"
-                android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/original_title_tv"
-                app:posterPath="@{movie.posterPath}"
-                tools:src="@mipmap/default_image" />
+        <TextView
+            android:id="@+id/year_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_default_margin"
+            android:layout_marginStart="@dimen/text_default_margin"
+            android:layout_marginTop="@dimen/year_margin_top"
+            android:textSize="@dimen/detail_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/mini_poster_iv"
+            app:layout_constraintTop_toBottomOf="@+id/original_title_tv"
+            tools:text="2018" />
 
-            <TextView
-                android:id="@+id/year_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/text_default_margin"
-                android:layout_marginStart="@dimen/text_default_margin"
-                android:layout_marginTop="@dimen/year_margin_top"
-                android:text="@{movie.releaseDate}"
-                android:textSize="@dimen/detail_text_size"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/mini_poster_iv"
-                app:layout_constraintTop_toBottomOf="@+id/original_title_tv"
-                tools:text="2018" />
+        <TextView
+            android:id="@+id/user_rating_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_default_margin"
+            android:layout_marginStart="@dimen/rating_margin_start"
+            android:layout_marginTop="@dimen/text_default_margin"
+            android:textSize="@dimen/detail_text_size"
+            app:layout_constraintStart_toEndOf="@id/mini_poster_iv"
+            app:layout_constraintTop_toBottomOf="@+id/year_tv"
+            tools:text="9.3/10" />
 
-            <TextView
-                android:id="@+id/user_rating_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/text_default_margin"
-                android:layout_marginStart="@dimen/rating_margin_start"
-                android:layout_marginTop="@dimen/text_default_margin"
-                android:text="@{movie.voteAverage}"
-                android:textSize="@dimen/detail_text_size"
-                app:layout_constraintStart_toEndOf="@id/mini_poster_iv"
-                app:layout_constraintTop_toBottomOf="@+id/year_tv"
-                tools:text="9.3/10" />
+        <TextView
+            android:id="@+id/overview_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_default_margin"
+            android:layout_marginStart="@dimen/text_default_margin"
+            android:layout_marginTop="@dimen/text_default_margin"
+            android:textSize="@dimen/description_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mini_poster_iv"
+            tools:text="Sample text description. Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
 
-            <TextView
-                android:id="@+id/overview_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/text_default_margin"
-                android:layout_marginStart="@dimen/text_default_margin"
-                android:layout_marginTop="@dimen/text_default_margin"
-                android:text="@{movie.overview}"
-                android:textSize="@dimen/description_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mini_poster_iv"
-                tools:text="Sample text description. Lorem Ipsum is simply dummy text of the printing and typesetting industry." />
+        <TextView
+            android:id="@+id/blank_space"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_margin="@dimen/text_default_margin"
+            app:layout_constraintTop_toBottomOf="@id/overview_tv" />
 
+        <TextView
+            android:id="@+id/trailers_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trailers"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintTop_toBottomOf="@+id/blank_space"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/text_default_margin"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/trailers_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_default_margin"
+            android:layout_marginStart="@dimen/text_default_margin"
+            android:layout_marginTop="@dimen/text_default_margin"
+            android:paddingTop="@dimen/recycler_view_padding_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailers_label"
+            tools:ignore="NestedScrolling" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/trailers_lv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/text_default_margin"
-                android:layout_marginStart="@dimen/text_default_margin"
-                android:layout_marginTop="@dimen/text_default_margin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/overview_tv"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="NestedScrolling" />
+        <TextView
+            android:id="@+id/blank_space2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_margin="@dimen/text_default_margin"
+            app:layout_constraintTop_toBottomOf="@id/trailers_rv" />
 
-        </android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/reviews_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reviews"
+            android:textSize="@dimen/label_text_size"
+            app:layout_constraintTop_toBottomOf="@+id/blank_space2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/text_default_margin"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reviews_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_default_margin"
+            android:layout_marginStart="@dimen/text_default_margin"
+            android:layout_marginTop="@dimen/text_default_margin"
+            android:paddingTop="@dimen/recycler_view_padding_top"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviews_label"
+            tools:ignore="NestedScrolling" />
 
-
-    </ScrollView>
-</layout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

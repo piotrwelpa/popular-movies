@@ -7,4 +7,7 @@
     <string name="refresh">Refresh</string>
     <string name="play_icon">Play icon</string>
     <string name="internet_error_message">Network connection is disabled. Please enable it and refresh.</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="review_icon">Review Icon</string>
 </resources>

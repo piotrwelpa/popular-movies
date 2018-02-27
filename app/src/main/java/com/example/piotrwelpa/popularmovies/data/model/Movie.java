@@ -148,8 +148,7 @@ public class Movie implements Serializable {
         this.originalLanguage = originalLanguage;
     }
 
-    @BindingAdapter({"bind:posterPath"})
-    public static void loadImage(ImageView view, String posterPath) {
+    public void loadImage(ImageView view, String posterPath) {
         String imageUrl = NetworkUtils.getImageUrl(posterPath);
         Picasso.with(view.getContext())
                 .load(imageUrl)
