@@ -1,5 +1,10 @@
 package com.example.piotrwelpa.popularmovies.ui.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +28,14 @@ import com.example.piotrwelpa.popularmovies.ui.loaders.ReviewLoader;
 import com.example.piotrwelpa.popularmovies.ui.loaders.TrailersLoader;
 import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MovieDetailActivity extends AppCompatActivity {
+    private static final String TAG = MovieDetailActivity.class.getSimpleName();
     private int mId = 0;
     private int mReviewId = 999;
     private List<Trailer> trailerData;
@@ -36,6 +43,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Double movieId;
     private TrailerListAdapter mTrailerAdapter;
     private ReviewListAdapter mReviewAdapter;
+    private static final String YT_BASE_APP_URL = "vnd.youtube:";
 
     @BindView(R.id.original_title_tv)
     TextView mOriginalTitle;
@@ -94,8 +102,40 @@ public class MovieDetailActivity extends AppCompatActivity {
                     mTrailerAdapter = new TrailerListAdapter(trailerData, new TrailerListAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Trailer trailer) {
-                            Toast.makeText(MovieDetailActivity.this, "TEST" + trailer.getId(), Toast.LENGTH_SHORT).show();
-                            Log.d("URL YOUTIBE: ", trailer.getId());
+                            String ytUrl = null;
+                            if (trailer.getSite().equals("YouTube")) {
+                                try {
+                                    ytUrl = NetworkUtils.getYoutubeUrl(trailer.getKey());
+                                } catch (MalformedURLException e) {
+                                    Log.e(TAG, " Error while getting YouTube URL");
+                                    String message = "Trailer cannot be viewed at this moment";
+                                    Toast.makeText(MovieDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+                                if (ytUrl != null){
+                                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getYtAppUrl(trailer.getKey())));
+                                    Intent siteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ytUrl));
+
+                                    PackageManager packageManager = getPackageManager();
+                                    List<ResolveInfo> activitiesApp = packageManager.queryIntentActivities(appIntent,
+                                            PackageManager.MATCH_DEFAULT_ONLY);
+                                    List<ResolveInfo> activitiesWeb = packageManager.queryIntentActivities(appIntent,
+                                            PackageManager.MATCH_DEFAULT_ONLY);
+                                    if (activitiesApp.size() > 0){
+                                        startActivity(appIntent);
+                                    } else if (activitiesWeb.size() >0){
+                                        startActivity(siteIntent);
+                                    } else{
+                                        String message = "You don't have app to open this trailer. Sorry";
+                                        Toast.makeText(MovieDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            } else {
+                                String message = "This trailer is designed to display at " + trailer.getSite() +
+                                        " which is not supported yet. Sorry";
+                                Toast.makeText(MovieDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                     mTrailersRv.setAdapter(mTrailerAdapter);
@@ -137,6 +177,10 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         };
         getSupportLoaderManager().initLoader(mReviewId, null, callback);
+    }
+
+    private String getYtAppUrl(String key){
+        return YT_BASE_APP_URL + key;
     }
 }
 

@@ -35,6 +35,24 @@ public final class NetworkUtils {
     /* Review Url*/
     public static final String REVIEW = "reviews";
 
+    /* Youtube url*/
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com";
+    private static final String YOUTUBE_VIDEO = "watch";
+    private static final String YOUTUBE_API_KEY = "v";
+
+
+    public static String getYoutubeUrl(String key) throws MalformedURLException {
+        return buildYoutubeUrl(key);
+    }
+
+    private static String buildYoutubeUrl(String key) throws MalformedURLException {
+        Uri trailerUri = Uri.parse(YOUTUBE_BASE_URL).buildUpon()
+                .appendPath(YOUTUBE_VIDEO)
+                .appendQueryParameter(YOUTUBE_API_KEY, key)
+                .build();
+        return trailerUri.toString();
+    }
+
     private static URL getUrl(Context context) throws MalformedURLException {
         String endpoint = MoviesPreferences.getPreferredEndpoint(context);
 
