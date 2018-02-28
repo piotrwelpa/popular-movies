@@ -1,9 +1,11 @@
 package com.example.piotrwelpa.popularmovies.ui.activities;
 
-import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -60,6 +62,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     @BindView(R.id.reviews_rv)
     RecyclerView mReviewsRv;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,12 +81,16 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void populateUI(Movie movie) {
         mOriginalTitle.setText(movie.getOriginalTitle());
         movie.loadImage(mPosterImageThumbnail, movie.getPosterPath());
-        Log.d("IMAGE PATH: ", NetworkUtils.getImageUrl(movie.getPosterPath()));
         mYearView.setText(movie.getReleaseDate());
         mUserRating.setText(movie.getVoteAverage());
         mOverView.setText(movie.getOverview());
-        loadTrailerData();
-        loadReviewData();
+
+        if (isOnline()) {
+            loadTrailerData();
+            loadReviewData();
+        } else {
+            Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadTrailerData() {
@@ -112,7 +119,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                                     Toast.makeText(MovieDetailActivity.this, message, Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
                                 }
-                                if (ytUrl != null){
+                                if (ytUrl != null) {
                                     Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getYtAppUrl(trailer.getKey())));
                                     Intent siteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ytUrl));
 
@@ -121,11 +128,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                                             PackageManager.MATCH_DEFAULT_ONLY);
                                     List<ResolveInfo> activitiesWeb = packageManager.queryIntentActivities(appIntent,
                                             PackageManager.MATCH_DEFAULT_ONLY);
-                                    if (activitiesApp.size() > 0){
+                                    if (activitiesApp.size() > 0) {
                                         startActivity(appIntent);
-                                    } else if (activitiesWeb.size() >0){
+                                    } else if (activitiesWeb.size() > 0) {
                                         startActivity(siteIntent);
-                                    } else{
+                                    } else {
                                         String message = "You don't have app to open this trailer. Sorry";
                                         Toast.makeText(MovieDetailActivity.this, message, Toast.LENGTH_SHORT).show();
                                     }
@@ -179,8 +186,19 @@ public class MovieDetailActivity extends AppCompatActivity {
         getSupportLoaderManager().initLoader(mReviewId, null, callback);
     }
 
-    private String getYtAppUrl(String key){
+    private String getYtAppUrl(String key) {
         return YT_BASE_APP_URL + key;
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = null;
+        if (cm != null) {
+            netInfo = cm.getActiveNetworkInfo();
+        }
+
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
 

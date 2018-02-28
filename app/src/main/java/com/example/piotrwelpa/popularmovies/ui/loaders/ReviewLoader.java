@@ -30,7 +30,6 @@ public class ReviewLoader extends AsyncTaskLoader<ReviewList> {
         String resultFromUrl = null;
         try {
             resultFromUrl = NetworkUtils.getResponseFromHttpUrl(getContext(), id, NetworkUtils.REVIEW);
-            Log.d("REVIEW JSON: ", resultFromUrl);
         } catch (IOException e) {
             Log.e(TAG, "Error in getting response from http. ");
             e.printStackTrace();
