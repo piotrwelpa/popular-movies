@@ -1,9 +1,12 @@
 package com.example.piotrwelpa.popularmovies.ui.activities;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.piotrwelpa.popularmovies.R;
+import com.example.piotrwelpa.popularmovies.data.database.MovieContract;
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.data.model.Review;
 import com.example.piotrwelpa.popularmovies.data.model.ReviewList;
@@ -35,6 +39,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MovieDetailActivity extends AppCompatActivity {
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
@@ -46,6 +51,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TrailerListAdapter mTrailerAdapter;
     private ReviewListAdapter mReviewAdapter;
     private static final String YT_BASE_APP_URL = "vnd.youtube:";
+    private Movie mMovie;
 
     @BindView(R.id.original_title_tv)
     TextView mOriginalTitle;
@@ -61,7 +67,23 @@ public class MovieDetailActivity extends AppCompatActivity {
     RecyclerView mTrailersRv;
     @BindView(R.id.reviews_rv)
     RecyclerView mReviewsRv;
+    @BindView(R.id.add_remove_favourite)
+    ImageView mAddRemoveFavourite;
 
+
+    @OnClick(R.id.add_remove_favourite)
+    public void onAddRemoveFavouriteClick() {
+        ContentValues movieValues = getContentDataForInsert(mMovie.getId(), mMovie.getTitle());
+        if (!checkIfMovieAlreadyExists(mMovie.getId())) {
+            Uri uri = this.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
+            if (uri != null)
+                mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_on);
+            else Toast.makeText(this, "Insert failed", Toast.LENGTH_SHORT).show();
+        } else {
+
+            Toast.makeText(this, "Already exists", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +91,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
 
-        Movie movie = (Movie) getIntent().getSerializableExtra(MainActivity.MOVIE_KEY);
+        mMovie = (Movie) getIntent().getSerializableExtra(MainActivity.MOVIE_KEY);
         mTrailersRv.setLayoutManager(new LinearLayoutManager(this));
         mReviewsRv.setLayoutManager(new LinearLayoutManager(this));
-        movieId = movie.getId();
+        movieId = mMovie.getId();
 
         setTitle("Movie details");
-        populateUI(movie);
+        populateUI(mMovie);
     }
 
     private void populateUI(Movie movie) {
@@ -84,6 +106,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         mYearView.setText(movie.getReleaseDate());
         mUserRating.setText(movie.getVoteAverage());
         mOverView.setText(movie.getOverview());
+
+        if (checkIfMovieAlreadyExists(mMovie.getId())){
+            mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_on);
+        }else{
+            mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_off);
+        }
 
         if (isOnline()) {
             loadTrailerData();
@@ -199,6 +227,23 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    private static ContentValues getContentDataForInsert(double movieId, String title) {
+        ContentValues movieValues = new ContentValues();
+        movieValues.put(MovieContract.MovieEntry._ID, movieId);
+        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, title);
+        return movieValues;
+    }
+
+    private boolean checkIfMovieAlreadyExists(double movieId) {
+        @SuppressLint("Recycle") Cursor checkCursor = this.getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
+                new String[]{MovieContract.MovieEntry._ID},
+                MovieContract.MovieEntry._ID + "= ?",
+                new String[]{String.valueOf(movieId)},
+                null);
+
+        return ((checkCursor != null) && (checkCursor.getCount() > 0));
     }
 }
 

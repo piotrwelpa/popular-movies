@@ -11,4 +11,5 @@
     <string name="reviews">Reviews</string>
     <string name="review_icon">Review Icon</string>
     <string name="not_implemented">Not implemented</string>
+    <string name="content_authority">com.example.piotrwelpa.popularmovies</string>
 </resources>
