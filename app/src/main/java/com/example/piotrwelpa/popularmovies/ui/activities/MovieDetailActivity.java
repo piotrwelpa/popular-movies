@@ -74,24 +74,27 @@ public class MovieDetailActivity extends AppCompatActivity {
     @OnClick(R.id.add_remove_favourite)
     public void onAddRemoveFavouriteClick() {
         if (!checkIfMovieAlreadyExists(mMovie.getId())) {
-            ContentValues movieValues = getContentDataForInsert(mMovie.getId(), mMovie.getTitle());
-            Uri uri = this.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
+            ContentValues movieValues = getContentDataForInsert(mMovie);
+
+            Uri uri = this.getContentResolver()
+                    .insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
+
             if (uri != null) {
                 mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_on);
                 Toast.makeText(this, "Added to favourite", Toast.LENGTH_SHORT).show();
-            }
-            else Toast.makeText(this, "Insert failed", Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(this, "Insert failed", Toast.LENGTH_SHORT).show();
+
         } else {
             int rowDeleted = this.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI,
                     "_ID = ?",
                     new String[]{String.valueOf(movieId)});
+
             if (rowDeleted > 0) {
                 mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_off);
                 Toast.makeText(this, "Removed from favourite", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Toast.makeText(this, "Removed failed", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 
@@ -117,9 +120,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         mUserRating.setText(movie.getVoteAverage());
         mOverView.setText(movie.getOverview());
 
-        if (checkIfMovieAlreadyExists(mMovie.getId())){
+        if (checkIfMovieAlreadyExists(mMovie.getId())) {
             mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_on);
-        }else{
+        } else {
             mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_off);
         }
 
@@ -239,10 +242,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private static ContentValues getContentDataForInsert(double movieId, String title) {
+    private static ContentValues getContentDataForInsert(Movie movie) {
         ContentValues movieValues = new ContentValues();
-        movieValues.put(MovieContract.MovieEntry._ID, movieId);
-        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, title);
+        movieValues.put(MovieContract.MovieEntry._ID, movie.getId());
+        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.getTitle());
+        movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.getPosterPath());
+        movieValues.put(MovieContract.MovieEntry.COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
+        movieValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
+        movieValues.put(MovieContract.MovieEntry.COLUMN_USER_RATING, movie.getVoteAverage());
+        movieValues.put(MovieContract.MovieEntry.COLUMN_YEAR, movie.getReleaseDate());
         return movieValues;
     }
 

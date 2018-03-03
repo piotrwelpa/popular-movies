@@ -21,8 +21,10 @@ import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.data.model.MovieListDetails;
 import com.example.piotrwelpa.popularmovies.data.preferences.MoviesPreferences;
 import com.example.piotrwelpa.popularmovies.ui.adapters.MovieListAdapter;
+import com.example.piotrwelpa.popularmovies.ui.loaders.FavouriteMovieLoader;
 import com.example.piotrwelpa.popularmovies.ui.loaders.MovieLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,11 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.posters_image_rv);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns()));
 
-        if (isOnline()) {
-            initView();
-        } else {
-            Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     private void initView() {
@@ -55,12 +53,20 @@ public class MainActivity extends AppCompatActivity {
                 = new LoaderManager.LoaderCallbacks<MovieListDetails>() {
             @Override
             public Loader<MovieListDetails> onCreateLoader(int id, Bundle args) {
-                return new MovieLoader(MainActivity.this);
+                if (!MoviesPreferences.getPreferredEndpoint(MainActivity.this)
+                        .equals(MoviesPreferences.PREF_FAVOURITES_ENDPOINT)) {
+                    return new MovieLoader(MainActivity.this);
+                }
+                return new FavouriteMovieLoader(MainActivity.this);
             }
 
             @Override
             public void onLoadFinished(Loader<MovieListDetails> loader, MovieListDetails data) {
-                mData = data.getResults();
+                if (data == null) {
+                    mData = new ArrayList<>();
+                } else {
+                    mData = data.getResults();
+                }
                 mMovieAdapter = new MovieListAdapter(mData, new MovieListAdapter.OnItemClickListener() {
 
                     @Override
@@ -124,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
                 }
                 return true;
+            case R.id.action_set_pref_favourites:
+                if (!MoviesPreferences.getPreferredEndpoint(this).equals(MoviesPreferences.PREF_FAVOURITES_ENDPOINT)) {
+                    MoviesPreferences.setPreferredEndpoint(this, MoviesPreferences.PREF_FAVOURITES_ENDPOINT);
+                    mId++;
+                    initView();
+
+                }
+                return true;
         }
         return false;
     }
@@ -142,6 +156,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        if (isOnline() || MoviesPreferences.getPreferredEndpoint(MainActivity.this)
+                .equals(MoviesPreferences.PREF_FAVOURITES_ENDPOINT)) {
+            initView();
+        } else {
+            Toast.makeText(this, R.string.internet_error_message, Toast.LENGTH_SHORT).show();
+        }
         // restore RecyclerView state
         if (mBundleRecyclerViewState != null) {
             Parcelable listState = mBundleRecyclerViewState.getParcelable(KEY_RECYCLER_STATE);

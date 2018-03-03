@@ -2,6 +2,13 @@ package com.example.piotrwelpa.popularmovies.data.database;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.piotrwelpa.popularmovies.R;
+
+import butterknife.BindView;
 
 public class MovieContract {
     public static final String CONTENT_AUTHORITY = "com.example.piotrwelpa.popularmovies";
@@ -16,6 +23,10 @@ public class MovieContract {
 
         static final String TABLE_NAME = "movie";
         public static final String COLUMN_TITLE = "title";
-
+        public static final String COLUMN_POSTER_PATH = "poster_path";
+        public static final String COLUMN_ORIGINAL_TITLE = "original_title";
+        public static final String COLUMN_YEAR = "year";
+        public static final String COLUMN_USER_RATING = "user_rating";
+        public static final String COLUMN_OVERVIEW = "overview";
     }
 }

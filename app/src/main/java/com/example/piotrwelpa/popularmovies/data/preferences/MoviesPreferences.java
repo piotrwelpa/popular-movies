@@ -15,6 +15,7 @@ public final class MoviesPreferences {
 
     public static final String PREF_POPULAR_ENDPOINT = "popular";
     public static final String PREF_TOP_RATED_ENDPOINT = "top_rated";
+    public static final String PREF_FAVOURITES_ENDPOINT = "favourites";
 
     private static final String PREF_ENDPOINT_KEY = "endpoint_key";
 

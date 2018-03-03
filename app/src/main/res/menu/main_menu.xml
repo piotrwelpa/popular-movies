@@ -3,14 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_set_pref_favourites"
+        android:title="@string/favourites"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:orderInCategory="100"/>
+
+    <item
         android:id="@+id/action_set_pref_popular"
         android:title="@string/sort_by_popular"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:orderInCategory="101"/>
 
     <item
         android:id="@+id/action_set_pref_top_rated"
         android:title="@string/sort_by_top_rated"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:orderInCategory="102"/>
 
     <item
         android:id="@+id/action_refresh"

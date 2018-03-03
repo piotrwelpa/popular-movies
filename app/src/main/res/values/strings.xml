@@ -12,4 +12,5 @@
     <string name="review_icon">Review Icon</string>
     <string name="not_implemented">Not implemented</string>
     <string name="content_authority">com.example.piotrwelpa.popularmovies</string>
+    <string name="favourites">Favourites</string>
 </resources>
