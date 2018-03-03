@@ -10,10 +10,6 @@ import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
 
-/**
- * Created by piotr.welpa on 20.02.2018.
- */
-
 public class MovieLoader extends AsyncTaskLoader<MovieListDetails> {
 
 

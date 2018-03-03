@@ -5,15 +5,10 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.piotrwelpa.popularmovies.data.mapper.MovieMapper;
-import com.example.piotrwelpa.popularmovies.data.model.MovieListDetails;
 import com.example.piotrwelpa.popularmovies.data.model.TrailerList;
 import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 
 import java.io.IOException;
-
-/**
- * Created by piotr.welpa on 20.02.2018.
- */
 
 public class TrailersLoader extends AsyncTaskLoader<TrailerList> {
     private Double id;

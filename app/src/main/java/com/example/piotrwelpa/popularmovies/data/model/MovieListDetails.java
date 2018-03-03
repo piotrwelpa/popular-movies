@@ -2,10 +2,6 @@ package com.example.piotrwelpa.popularmovies.data.model;
 
 import java.util.List;
 
-/**
- * Created by piotr.welpa on 18.02.2018.
- */
-
 public class MovieListDetails {
     private Double page;
     private Double totalPages;

@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-/**
- * Created by piotr.welpa on 19.02.2018.
- */
-
 public final class MoviesPreferences {
     private MoviesPreferences() {
     }

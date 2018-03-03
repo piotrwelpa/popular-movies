@@ -3,15 +3,11 @@ package com.example.piotrwelpa.popularmovies.ui.loaders;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import com.example.piotrwelpa.popularmovies.data.database.MovieContract;
-import com.example.piotrwelpa.popularmovies.data.mapper.MovieMapper;
 import com.example.piotrwelpa.popularmovies.data.model.Movie;
 import com.example.piotrwelpa.popularmovies.data.model.MovieListDetails;
-import com.example.piotrwelpa.popularmovies.utilities.NetworkUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

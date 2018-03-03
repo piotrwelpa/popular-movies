@@ -1,6 +1,5 @@
 package com.example.piotrwelpa.popularmovies.data.model;
 
-import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
 import com.example.piotrwelpa.popularmovies.R;
@@ -10,9 +9,6 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by piotr.welpa on 18.02.2018.
- */
 
 public class Movie implements Serializable {
     private Double id;

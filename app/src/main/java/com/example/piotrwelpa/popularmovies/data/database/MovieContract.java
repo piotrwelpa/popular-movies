@@ -2,13 +2,6 @@ package com.example.piotrwelpa.popularmovies.data.database;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.piotrwelpa.popularmovies.R;
-
-import butterknife.BindView;
 
 public class MovieContract {
     public static final String CONTENT_AUTHORITY = "com.example.piotrwelpa.popularmovies";
