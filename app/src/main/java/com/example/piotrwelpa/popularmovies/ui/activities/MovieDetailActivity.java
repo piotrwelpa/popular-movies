@@ -73,15 +73,25 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.add_remove_favourite)
     public void onAddRemoveFavouriteClick() {
-        ContentValues movieValues = getContentDataForInsert(mMovie.getId(), mMovie.getTitle());
         if (!checkIfMovieAlreadyExists(mMovie.getId())) {
+            ContentValues movieValues = getContentDataForInsert(mMovie.getId(), mMovie.getTitle());
             Uri uri = this.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, movieValues);
-            if (uri != null)
+            if (uri != null) {
                 mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_on);
+                Toast.makeText(this, "Added to favourite", Toast.LENGTH_SHORT).show();
+            }
             else Toast.makeText(this, "Insert failed", Toast.LENGTH_SHORT).show();
         } else {
+            int rowDeleted = this.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI,
+                    "_ID = ?",
+                    new String[]{String.valueOf(movieId)});
+            if (rowDeleted > 0) {
+                mAddRemoveFavourite.setImageResource(android.R.drawable.btn_star_big_off);
+                Toast.makeText(this, "Removed from favourite", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Removed failed", Toast.LENGTH_SHORT).show();
+            }
 
-            Toast.makeText(this, "Already exists", Toast.LENGTH_SHORT).show();
         }
     }
 
