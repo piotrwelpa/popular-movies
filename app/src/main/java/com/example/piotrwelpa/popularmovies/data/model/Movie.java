@@ -1,5 +1,7 @@
 package com.example.piotrwelpa.popularmovies.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
 import com.example.piotrwelpa.popularmovies.R;
@@ -10,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class Movie implements Serializable {
+public class Movie implements Parcelable {
     private Double id;
     private Double voteCount;
     private boolean video;
@@ -27,6 +29,54 @@ public class Movie implements Serializable {
     private String originalLanguage;
 
     private static final long serialVersionUID = 1L;
+
+    private Movie(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            voteCount = null;
+        } else {
+            voteCount = in.readDouble();
+        }
+        video = in.readByte() != 0;
+        if (in.readByte() == 0) {
+            voteAverage = null;
+        } else {
+            voteAverage = in.readDouble();
+        }
+        title = in.readString();
+        if (in.readByte() == 0) {
+            popularity = null;
+        } else {
+            popularity = in.readDouble();
+        }
+        posterPath = in.readString();
+        originalTitle = in.readString();
+        backdropPath = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        releaseDate = in.readString();
+        originalLanguage = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    public Movie() {
+
+    }
 
     public Double getId() {
         return id;
@@ -153,5 +203,47 @@ public class Movie implements Serializable {
                 .into(view);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(id);
+        }
+        if (voteCount == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(voteCount);
+        }
+        dest.writeByte((byte) (video ? 1 : 0));
+        if (voteAverage == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(voteAverage);
+        }
+        dest.writeString(title);
+        if (popularity == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(popularity);
+        }
+        dest.writeString(posterPath);
+        dest.writeString(originalTitle);
+        dest.writeString(backdropPath);
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+        dest.writeString(originalLanguage);
+    }
 }
 

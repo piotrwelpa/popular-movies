@@ -104,7 +104,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
 
-        mMovie = (Movie) getIntent().getSerializableExtra(MainActivity.MOVIE_KEY);
+        mMovie = (Movie) getIntent().getParcelableExtra(MainActivity.MOVIE_KEY);
         mTrailersRv.setLayoutManager(new LinearLayoutManager(this));
         mReviewsRv.setLayoutManager(new LinearLayoutManager(this));
         movieId = mMovie.getId();
